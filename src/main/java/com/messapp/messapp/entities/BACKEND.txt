@@ -1,0 +1,26 @@
+BACKEND : 
+	/user 
+		signup 
+		login
+		me
+		markTodaysAttendance
+		postALeave
+		ViewAttendance
+		ViewBilling
+		ViewAttendanceByMonthAndYear
+	/admin
+		login 
+		signup 
+		me 
+		ViewTodaysLeaves , Change Status
+		ViewMontlyLeaves , Change status 
+		ViewAttendanceByMonthandYear
+		Bill
+
+
+
+register 
+	admin 
+		username , password , role
+	person
+		username,  password , role , messtype , name
