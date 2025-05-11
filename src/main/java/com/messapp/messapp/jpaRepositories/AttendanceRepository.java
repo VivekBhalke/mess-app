@@ -18,6 +18,7 @@ public interface AttendanceRepository extends JpaRepository<AttendanceEntity , L
 	
 	public List<AttendanceEntity> findByPersonAndDateBetween(PersonEntity person , Date startDate , Date endDate);
 	
+	public List<AttendanceEntity> findByDateAfterAndPerson(Date date , PersonEntity person);
 	
 	
 }

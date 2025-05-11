@@ -9,9 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.messapp.messapp.dto.AttendanceShowUserDTO;
 import com.messapp.messapp.entities.AttendanceEntity;
+import com.messapp.messapp.entities.BillingEntity;
+import com.messapp.messapp.entities.PerDayAmount;
 import com.messapp.messapp.entities.PersonEntity;
+import com.messapp.messapp.enums.MessType;
 import com.messapp.messapp.jpaRepositories.AttendanceRepository;
+import com.messapp.messapp.jpaRepositories.PerDayAmountRepository;
 import com.messapp.messapp.mapper.AttendanceEntityMapper;
+import com.messapp.messapp.middleware.BillingServiceImpl;
 import com.messapp.messapp.middleware.DateRangeUtil;
 import com.messapp.messapp.services.AttendanceService;
 
@@ -24,7 +29,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 	private AttendanceRepository attendanceRepository;
 	
 	@Autowired
+	private PerDayAmountRepository perDayAmountRepo;
+	
+	@Autowired
 	private AttendanceEntityMapper attendanceMapper;
+	
+	@Autowired
+	private BillingServiceImpl billingService;
 	
 	@Override
 	@Transactional
@@ -84,6 +95,41 @@ public class AttendanceServiceImpl implements AttendanceService {
 				.stream()
 				.map(attendanceMapper)
 				.collect(Collectors.toList());
+	}
+
+	
+	
+	
+
+	@Override
+	public Double getAttendanceCount(PersonEntity person) {
+		
+		
+		BillingEntity billingEntity = billingService.getTheLatestBillingEntity(person);
+		
+		return getAttendanceCount(person , billingEntity);
+		
+	}
+
+
+	@Override
+	public Double getAttendanceCount(PersonEntity person, BillingEntity billingEntity) {
+		if(billingEntity == null)
+		{
+			List<AttendanceEntity> attendanceEntites = attendanceRepository.findByPerson(person);
+			Double attendanceCount = (double) attendanceEntites.stream()
+				    .map(AttendanceEntity::getDate)
+				    .distinct()
+				    .count();
+			return attendanceCount;
+
+		}
+		Date date = billingEntity.getDate();
+		return (double)attendanceRepository.findByDateAfterAndPerson(date, person)
+				.stream()
+				.map(AttendanceEntity::getDate)
+			    .distinct()
+			    .count();
 	}
 	
 	

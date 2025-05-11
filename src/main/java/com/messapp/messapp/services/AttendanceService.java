@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.messapp.messapp.dto.AttendanceShowUserDTO;
 import com.messapp.messapp.entities.AttendanceEntity;
+import com.messapp.messapp.entities.BillingEntity;
 import com.messapp.messapp.entities.PersonEntity;
 
 public interface AttendanceService {
@@ -22,4 +23,8 @@ public interface AttendanceService {
 	
 	public List<AttendanceShowUserDTO> getAttendanceForOneDay(PersonEntity person , Date date);
 	
+	
+	public Double getAttendanceCount(PersonEntity person);
+	
+	public Double getAttendanceCount(PersonEntity person , BillingEntity billingEntity);
 }
