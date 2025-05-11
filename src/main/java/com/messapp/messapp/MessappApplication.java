@@ -10,7 +10,7 @@ import com.messapp.messapp.middleware.EnvLoader;
 public class MessappApplication {
 
 	public static void main(String[] args) {
-		
+		//this is after the commit
 		new EnvLoader();
 		SpringApplication.run(MessappApplication.class, args);
 	}
